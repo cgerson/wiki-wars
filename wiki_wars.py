@@ -100,7 +100,8 @@ def main(pages,words):
 if __name__ == "__main__":
 
     import argparse
-    parser = argparse.ArgumentParser(description='Find similarities between Wikipedia pages, either by common links or common words.')
+    parser = argparse.ArgumentParser(description='Find similarities between Wikipedia pages, \
+either by common links or common words.')
 
     #add argument options
     parser.add_argument('pages', nargs='*',
