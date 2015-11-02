@@ -69,7 +69,7 @@ class keywordObject:
         return stemmed
 
         
-def explore_links(start_page,end_page):
+def return_direct_links(start_page,end_page):
     """ Parse through common links of start_page and end_page to find 
     whether end_page can be found within links of any common links.
     
@@ -77,10 +77,10 @@ def explore_links(start_page,end_page):
     one could connect start_page and end_page. This function only tries 
     to reduce possibilities."""
     
-    keyword_object_1 = keywordObject(start_page)
-    keyword_object_2 = keywordObject(end_page)
+    keyword_object_start = keywordObject(start_page)
+    keyword_object_end = keywordObject(end_page)
     
-    common_links = set(keyword_object_1.return_links()) & set(keyword_object_2.return_links())
+    common_links = set(keyword_object_start.return_links()) & set(keyword_object_end.return_links())
 
     direct_links = []
     for link in common_links:
@@ -119,7 +119,7 @@ def main(pages,words):
 
         print "-"*80
 
-        direct_links = explore_links(pages[0],pages[1])
+        direct_links = return_direct_links(pages[0],pages[1]) #only passes first two page arguments
         
         if len(direct_links)>0: #check if there are any links that lead directly from start_page to end_age
             print "These links will lead you directly from {0} to {1}".format(pages[0],pages[1])
