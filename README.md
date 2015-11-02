@@ -14,7 +14,7 @@ Running on the CL: python wiki_wars.py Spain Existentialism
 
 Returns:
 
-These links will lead you directly from Spain to Existentialism
+These links will lead you directly from Spain to Existentialism  
 Humanism  
 Averroes  
 Modernism  
