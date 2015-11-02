@@ -10,6 +10,7 @@ from nltk.corpus import stopwords
 stops = set(stopwords.words("english"))
 import string
 
+
 class keywordObject:
     
     def __init__(self,keyword):
@@ -49,7 +50,7 @@ class keywordObject:
         return good_links
     
     def return_filtered_words(self):
-        """ Parse document and return list of stemmed words, 
+        """ Parse body of document  and return list of stemmed words, 
         excl. stopwords, punctuation and numbers """
         
         soup = self.return_soup()
@@ -90,7 +91,6 @@ def return_direct_links(start_page,end_page):
 
     return direct_links
 
-    
     
 def main(pages,words):
     """Two options: words or war.
