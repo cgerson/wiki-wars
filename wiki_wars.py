@@ -30,7 +30,7 @@ class keywordObject:
         links = []
         soup = self.return_soup()
         for line in soup.find_all('a',attrs={'href':re.compile('wiki(?!pedia)')}):
-            links.append(line['href'])
+            links.append(line['href'][6:]) #cut off "/wiki/
         links_filtered = self.filter_links(links)
         return links_filtered
 
@@ -40,8 +40,8 @@ class keywordObject:
         #consider allowing for "Special:Random" link
         good_links = []
         for link in links_list:
-            bad = ["wiki/Category","wiki/Help","wiki/Wikipedia","wiki/File",
-                   "wiki/Main_Page","wiki/Portal","wiki/Special",
+            bad = ["Category","Help","Wikipedia","File",
+                   "Main_Page","Portal","Special",
                    ".org"]
             bools = [link.find(x) == -1 for x in bad]
             if False not in bools:
@@ -68,8 +68,38 @@ class keywordObject:
             stemmed.append(porter_stemmer.stem(w))
         return stemmed
 
+        
+def explore_links(start_page,end_page):
+    """ Parse through common links of start_page and end_page to find 
+    whether end_page can be found within links of any common links.
+    
+    Possibility still exists that there is one page through which
+    one could connect start_page and end_page. This function only tries 
+    to reduce possibilities."""
+    
+    keyword_object_1 = keywordObject(start_page)
+    keyword_object_2 = keywordObject(end_page)
+    
+    common_links = set(keyword_object_1.return_links()) & set(keyword_object_2.return_links())
+
+    direct_links = []
+    for link in common_links:
+        keyword_object = keywordObject(link)
+        if end_page in keyword_object.return_links():
+            direct_links.append(link)
+
+    return direct_links
+
+    
     
 def main(pages,words):
+    """Two options: words or war.
+
+    If words chosen, script returns number of words in common between two pages.
+
+    If war chosen (default), script returns any articles that will lead directly from 
+    start_page to end_page (chosen from within links common to both pages, 
+    to reduce computation time)."""
 
     print "="*80
     print "Finding a connection..."
@@ -85,22 +115,26 @@ def main(pages,words):
         
         print "These pages have {0} words in common.".format(len(common_words))
             
-    else: #if words not chosen, print Wikipedia article links that selected pages share
+    else: #otherwise, print all links that will lead directly from starting page to ending page
 
-        for i,k in enumerate(pages):
-            keyword_object = keywordObject(k)
-            d[i] = set(keyword_object.return_links())
-        common_links = reduce(lambda x,y: x&y, d.values())
+        print "-"*80
+
+        direct_links = explore_links(pages[0],pages[1])
         
-        print "These pages have the following links in common: "
-        for link in common_links:
-            print link
+        if len(direct_links)>0: #check if there are any links that lead directly from start_page to end_age
+            print "These links will lead you directly from {0} to {1}".format(pages[0],pages[1])
+            for link in direct_links:
+                print link
+        else:
+            print "No link found that will lead from {0} to {1}".format(pages[0],pages[1])
+                     
+        print "-"*80
 
     
 if __name__ == "__main__":
 
     import argparse
-    parser = argparse.ArgumentParser(description='Find similarities between Wikipedia pages, \
+    parser = argparse.ArgumentParser(description='Find connections between Wikipedia pages, \
 either by common links or common words.')
 
     #add argument options
