@@ -1,8 +1,8 @@
 # wiki-wars
 
 This script has two options:
-- generate a list of the Wikipedia links that selected pages have in common, or
-- return number of words pages have in common
+- Common links: generate a list of the Wikipedia links that selected pages have in common, or
+- Common words: return number of words pages have in common
 
 How to use:
 
@@ -26,7 +26,7 @@ These pages have the following links in common:
 /wiki/Europe
 /wiki/Maimonides
 
-2) Number of words in common
+2) Common words
 
 Running on the CL: python wiki_wars.py Spain Existentialism --words
 
