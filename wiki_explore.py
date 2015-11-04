@@ -2,6 +2,9 @@
 Print number of links and number of words of articles 
 that are linked to within a selected page.
 
+WARNING: Some pages have thousands of links! This script
+will print information for each of these links!
+
 '''
 
 from wiki_wars import pageObject
