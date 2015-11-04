@@ -1,6 +1,6 @@
 # wiki-wars
 
-wiki-wars.py script has two options:
+wiki_wars.py script has two options:
 - Common links: generate a list of the Wikipedia links that will lead from one page to another
 - Common words: return number of words pages have in common
 
