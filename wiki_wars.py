@@ -26,14 +26,14 @@ class pageObject:
         return soup
 
     def return_links(self):
-        """ Return links to other Wikipedia articles included in given Wikipedia page """
+        """ Return (unique) links to other Wikipedia articles included in given Wikipedia page """
         
         links = []
         soup = self.return_soup()
         for line in soup.find_all('a',attrs={'href':re.compile('wiki(?!pedia)')}):
             links.append(line['href'][6:]) #cut off "/wiki/
 
-        return self.filter_links(links)
+        return set(self.filter_links(links))
 
     def filter_links(self,links_list):
         """ Filter links to exclude links appearing in every page """
@@ -80,8 +80,9 @@ def return_direct_links(start_page,end_page):
     
     page_object_start = pageObject(start_page)
     page_object_end = pageObject(end_page)
-    
-    common_links = set(page_object_start.return_links()) & set(page_object_end.return_links())
+
+    #set of links common to both start and end page
+    common_links = page_object_start.return_links() & page_object_end.return_links()
 
     direct_links = []
     for link in common_links:
