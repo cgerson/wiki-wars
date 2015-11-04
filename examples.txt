@@ -1,0 +1,16 @@
+''' Examples of wiki war results from http://thewikigame.com/speed-race '''
+
+6 clicks in 91s.
+Spica → Earth → North America → South Atlantic States → West South Central States → Southern United States
+
+6 clicks in 47s.
+Spica → Earth → North American Plate → North America → List of regions of the United States → Southern United States
+
+10 clicks in 70s.
+Spica → Earth → Planet → NASA Exoplanet Archive → NASA → Federal government of the United States → United States → Bible Belt → Oklahoma → Southern United States
+
+13 clicks in 82s.
+Cyberwarfare → Spica → Earth → Western Greenland → List of islands by area → Antarctica → Continent → North America → List of regions of the United States → Central Georgia → Georgia (U.S. state) → Southeastern United States → Southern United States
+
+8 clicks in 62s.
+Spica → Spica (disambiguation) → Spica (group) → South Korean → South Korea–United States relations → United States → Deep South → Southern United States

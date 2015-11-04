@@ -11,7 +11,7 @@ stops = set(stopwords.words("english"))
 import string
 
 
-class keywordObject:
+class pageObject:
     
     def __init__(self,keyword):
         self.keyword = keyword
@@ -32,8 +32,8 @@ class keywordObject:
         soup = self.return_soup()
         for line in soup.find_all('a',attrs={'href':re.compile('wiki(?!pedia)')}):
             links.append(line['href'][6:]) #cut off "/wiki/
-        links_filtered = self.filter_links(links)
-        return links_filtered
+
+        return self.filter_links(links)
 
     def filter_links(self,links_list):
         """ Filter links to exclude links appearing in every page """
@@ -41,12 +41,12 @@ class keywordObject:
         #consider allowing for "Special:Random" link
         good_links = []
         for link in links_list:
-            bad = ["Category","Help","Wikipedia","File",
-                   "Main_Page","Portal","Special",
-                   ".org"]
+            bad = [self.keyword,"Talk","Category","Help","Wikipedia","File",
+                   "Main_Page","Portal","Special","Template",".org"]
             bools = [link.find(x) == -1 for x in bad]
             if False not in bools:
                 good_links.append(link)
+
         return good_links
     
     def return_filtered_words(self):
@@ -78,15 +78,15 @@ def return_direct_links(start_page,end_page):
     one could connect start_page and end_page. This function only tries 
     to reduce possibilities."""
     
-    keyword_object_start = keywordObject(start_page)
-    keyword_object_end = keywordObject(end_page)
+    page_object_start = pageObject(start_page)
+    page_object_end = pageObject(end_page)
     
-    common_links = set(keyword_object_start.return_links()) & set(keyword_object_end.return_links())
+    common_links = set(page_object_start.return_links()) & set(page_object_end.return_links())
 
     direct_links = []
     for link in common_links:
-        keyword_object = keywordObject(link)
-        if end_page in keyword_object.return_links():
+        page_object = pageObject(link)
+        if end_page in page_object.return_links():
             direct_links.append(link)
 
     return direct_links
@@ -109,8 +109,8 @@ def main(pages,words):
     if words: #if words option chosen, print number of words in common (excl. stopwords)
 
         for i,k in enumerate(pages):
-            keyword_object = keywordObject(k)
-            d[i] = set(keyword_object.return_filtered_words())
+            page_object = pageObject(k)
+            d[i] = set(page_object.return_filtered_words())
         common_words = reduce(lambda x,y: x&y, d.values())
         
         print "These pages have {0} words in common.".format(len(common_words))
