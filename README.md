@@ -27,12 +27,12 @@ Maimonides
 2) Common words
 
 Running on the CL:
-``
+```
 python wiki_wars.py Spain Existentialism --words
 ```
 
 Returns:
-``
+```
 These pages have 647 words in common.
 ```
 
