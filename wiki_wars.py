@@ -10,6 +10,8 @@ from nltk.corpus import stopwords
 stops = set(stopwords.words("english"))
 import string
 
+import time
+
 
 class pageObject:
     
@@ -28,8 +30,9 @@ class pageObject:
     def return_links(self):
         """ Return (unique) links to other Wikipedia articles included in given Wikipedia page """
         
-        links = []
         soup = self.return_soup()
+
+        links = []
         for line in soup.find_all('a',attrs={'href':re.compile('wiki(?!pedia)')}):
             links.append(line['href'][6:]) #cut off "/wiki/
 
@@ -54,19 +57,23 @@ class pageObject:
         excl. stopwords, punctuation and numbers """
         
         soup = self.return_soup()
+
         bag_of_words = []
         for line in soup.findAll('p'):
             if line.text:
                 bag_of_words.extend(line.text.strip().split())
         bow = " ".join(bag_of_words)
+
         text_nonums = re.sub("\d+", " ", bow) #no numbers
         text_nopunct = re.sub(r'[^\w\s]','',text_nonums) #no punctuation
+
         words = wordpunct_tokenize(text_nopunct.lower()) #could use other tokenizer since no punct left
+
         unstemmed = filter(lambda token: token not in stops \
                       and len(token)>1, words)
-        stemmed = []
-        for w in unstemmed:
-            stemmed.append(porter_stemmer.stem(w))
+        
+        stemmed = [porter_stemmer.stem(w) for w in unstemmed]
+
         return stemmed
 
         
@@ -101,7 +108,7 @@ def main(pages,words):
     If war chosen (default), script returns any articles that will lead directly from 
     start_page to end_page (chosen from within links common to both pages, 
     to reduce computation time)."""
-
+    
     print "="*80
     print "Finding a connection..."
 
@@ -112,6 +119,7 @@ def main(pages,words):
         for i,k in enumerate(pages):
             page_object = pageObject(k)
             d[i] = set(page_object.return_filtered_words())
+
         common_words = reduce(lambda x,y: x&y, d.values())
         
         print "These pages have {0} words in common.".format(len(common_words))
@@ -145,5 +153,9 @@ either by common links or common words.')
                         help='return the number of words in common')
 
     args = parser.parse_args()
+
+    t = time.time()
     
     main(args.pages,args.words)
+
+    print "Runtime: {0} seconds.\n".format(time.time() - t)
